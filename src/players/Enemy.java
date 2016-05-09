@@ -4,7 +4,6 @@ import gamemanager.GameManager;
 import gamemanager.GameMath;
 import gamemanager.Settings;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 /**
@@ -53,7 +52,7 @@ public class Enemy extends Player {
         if(previousTime == 0) previousTime = time;
         if(imageView.getBoundsInParent().intersects(GameManager.mainPlayer.getImageView().getBoundsInParent())
                 && time - previousTime >= 500) {
-//            GameManager.mainPlayer.deductHealth(damage);
+            GameManager.mainPlayer.deductHealth(damage);
             System.out.println("Enemy:\tAttacking Main Player");
             previousTime = time;            
         } else {
@@ -127,8 +126,7 @@ public class Enemy extends Player {
         this.currentHealth--;
         if (this.currentHealth == 0) {
             this.imageView.setImage(Settings.getDeadPlayerImage());
-//            pane.getChildren().remove(this.getImageView());
-            System.out.println("Enemy Died");
+            GameManager.amountKilled++;
             GameManager.removePlayer(this);
         }
     }            

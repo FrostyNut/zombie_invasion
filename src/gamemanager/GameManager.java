@@ -34,6 +34,8 @@ public class GameManager {
     
     private static AnimationTimer mainUpdateTimer;
     private static AnimationTimer enemySpawnTimer;
+    
+    public static int amountKilled = 0;
 
     /**
      * Private GameManager constructor method so the class cannot be instantiated.
@@ -70,12 +72,18 @@ public class GameManager {
             public void handle(long now) {
                 long time = now / 1000000;
                 
+                if(mainPlayer.getHealth() <= 0) {
+                    stopGame();
+                }
+                
                 if(time - previousTime >= Settings.REFRESH_RATE) {
                     List<Enemy> temp = new ArrayList<>(enemies);
                     for(Enemy e : temp) {
                         e.attackPlayer(now);
                     }
-                    gameStats.setText("Health:\t"+mainPlayer.getHealth());
+                    
+                    gameStats.setText("Health:\t"+mainPlayer.getHealth()
+                                        + "\tAmount Killed:\t"+amountKilled);
                     previousTime = time;
                 }                                
                 
@@ -102,7 +110,10 @@ public class GameManager {
         spawnPlayer();
         spawnEnemies();
         
+        input.resetSettings();
         input.addListeners();                                
+        
+        amountKilled = 0;
         
         gameActive = true;               
         
@@ -119,6 +130,7 @@ public class GameManager {
         input.removeListeners();
         mainUpdateTimer.stop();
         enemySpawnTimer.stop();
+        primaryStage.setScene(SceneCreator.createGameOverScene());
     }
     
     
@@ -157,6 +169,11 @@ public class GameManager {
         enemySpawnTimer.start();
         System.out.println("GameManager:\tGame Resumed.");
     }
+    
+    
+    public static void goToMainMenu() {
+        primaryStage.setScene(SceneCreator.createStartScene());
+    }
 
 
     /**
@@ -190,11 +207,43 @@ public class GameManager {
                 long time = now / 1000000;
                 if(time - previousTime >= 5000) {
                     for (int i = 0; i < rand.nextInt(10) + 1; i++) {
-                        Enemy e = new Enemy(playerField,
-                                Settings.getEnemyImage(1),
-                                rand.nextInt(RuntimeSettings.getMaxPlayerSpawnX()),
-                                rand.nextInt(RuntimeSettings.getMaxPlayerSpawnY()),
-                                0, 0, 0, 0, 3, 2);
+                        Enemy e;
+                        
+                        switch(rand.nextInt(3)) {
+                            
+                            case 0:
+                                e = new Enemy(playerField,
+                                        Settings.getEnemyImage(1),
+                                        rand.nextInt(RuntimeSettings.getMaxPlayerSpawnX()),
+                                        rand.nextInt(RuntimeSettings.getMaxPlayerSpawnY()),
+                                        0, 0, 0, 0, 2, 1);
+                                break;
+                                
+                            case 1:
+                                 e = new Enemy(playerField,
+                                        Settings.getEnemyImage(2),
+                                        rand.nextInt(RuntimeSettings.getMaxPlayerSpawnX()),
+                                        rand.nextInt(RuntimeSettings.getMaxPlayerSpawnY()),
+                                        0, 0, 0, 0, 3, 2);
+                                break;                  
+                                
+                            case 2:
+                                e = new Enemy(playerField,
+                                        Settings.getEnemyImage(3),
+                                        rand.nextInt(RuntimeSettings.getMaxPlayerSpawnX()),
+                                        rand.nextInt(RuntimeSettings.getMaxPlayerSpawnY()),
+                                        0, 0, 0, 0, 4, 4);
+                                break;
+                                
+                            default:
+                                e = new Enemy(playerField,
+                                        Settings.getEnemyImage(1),
+                                        rand.nextInt(RuntimeSettings.getMaxPlayerSpawnX()),
+                                        rand.nextInt(RuntimeSettings.getMaxPlayerSpawnY()),
+                                        0, 0, 0, 0, 2, 1);
+                                break;                                
+                                
+                        }
                         enemies.add(e);
                         e.changeLocation();
                         playerField.getChildren().add(e.getImageView());

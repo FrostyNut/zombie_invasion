@@ -15,10 +15,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 /**
- *
+ * The SceneCreator creates scenes that will be used during the runtime of the
+ * program. Think of scenes as different screens in the game. For example, the
+ * scene of which we play the game in is called the "Main Game Scene" and the
+ * scene where we click the start button is called the "Start Scene". This makes 
+ * it much easier so there is less "Graphical" code in the GameManager and we can
+ * better read the more "logical" code. In other words, there is less visual 
+ * noise. 
  *
  * @author Jackie Chan
  * May 5, 2016
@@ -26,7 +31,17 @@ import javafx.stage.Stage;
 public class SceneCreator {
 
 
+    /**
+     * Creates the "Game Paused Scene". The game paused scene only occurs when 
+     * the user presses the key "T". It will give the user the options to resume
+     * game play or go to the main menu. 
+     * 
+     * @return  A scene containing two buttons and the text "Paused".
+     */
     public static Scene createPauseMenu() {
+        
+        Text paused = new Text("Paused");
+        paused.setFont(new Font(50));
         
         // Resume button for when user wants to resume gameplay.
         Button resumeButton = new Button("Resume");
@@ -42,7 +57,7 @@ public class SceneCreator {
         mainMenuButton.setOnAction(new EventHandler<ActionEvent>() {
            @Override
            public void handle(ActionEvent e) {
-//               GameManager.displayMainMenu();
+               GameManager.goToMainMenu();
            }
         });
 
@@ -50,6 +65,9 @@ public class SceneCreator {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         
+        gridPane.add(paused, 0, 0);
+        GridPane.setHalignment(paused, HPos.CENTER);
+        GridPane.setMargin(paused, new Insets(5, 7, 5, 7));
         gridPane.add(resumeButton, 0, 1);
         GridPane.setHalignment(resumeButton, HPos.CENTER);
         GridPane.setMargin(resumeButton, new Insets(5,7,5,7));
@@ -63,22 +81,35 @@ public class SceneCreator {
     }
 
 
+    /**
+     * Creates a scene containing the Start button. 
+     * @return 
+     */
     public static Scene createStartScene() {
 
-        Button btn = new Button();
-        btn.setText("Start!");
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-
-        Scene scene = new Scene(root, 800, 600);
-
+        Text zombieInvasion = new Text("Zombie Invasion");
+        zombieInvasion.setFont(new Font(50));
+        
+        Button btn = new Button("Start!");
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 GameManager.loadGame();
             }
         });
+        
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        
+        gridPane.add(zombieInvasion, 0, 0);
+        GridPane.setHalignment(zombieInvasion, HPos.CENTER);
+        GridPane.setMargin(zombieInvasion, new Insets(5,7,5,7));
+
+        gridPane.add(btn, 0, 1);
+        GridPane.setHalignment(btn, HPos.CENTER);
+        GridPane.setMargin(btn, new Insets(5,7,5,7));        
+        
+        Scene scene = new Scene(gridPane, 800, 600);
 
         return scene;
     }
@@ -103,7 +134,7 @@ public class SceneCreator {
         statusBox.setStyle("-fx-background-color: #FFFFFF;");
 
         Label stats = new Label("Health: ");
-        stats.setPrefSize(125, 25);
+        stats.setPrefSize(400, 25);
         statusBox.getChildren().add(stats);
 
         Pane playerField = new Pane();
@@ -137,7 +168,7 @@ public class SceneCreator {
         restartButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-//                GameManager.restartGame();
+                GameManager.restartGame();
             }
         });
 
@@ -145,7 +176,7 @@ public class SceneCreator {
         mainMenuButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-//                GameManager.displayMainMenu();
+                GameManager.goToMainMenu();
             }
         });
 

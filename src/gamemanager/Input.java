@@ -1,6 +1,5 @@
 package gamemanager;
 
-import java.awt.MouseInfo;
 import java.util.BitSet;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -56,7 +55,7 @@ public class Input {
     /**
      * A boolean variable that tracks if the mouse is being pressed.
      */
-    private boolean isMouseBeingPressed = false;
+    private boolean isShooting = false;
     
                     
     /**
@@ -124,12 +123,12 @@ public class Input {
         @Override
         public void handle(MouseEvent e) {  
             System.out.println("Input:\tMouse Pressed Event Fired");
-//            mousePressedEvent = e; 
-//            if (!isMouseBeingPressed && GameManager.gameActive()) {
-//                isMouseBeingPressed = true;
-//                gunshotAnimation.start();
-//                System.out.println("Started shooting: "+isMouseBeingPressed);
-//            }                
+            mousePressedEvent = e;
+            if(!isShooting) {
+                isShooting = true;
+                if(GameManager.gameActive()) gunshotAnimation.start();
+                System.out.println("Started shooting");
+            }
             
         }
         
@@ -157,9 +156,9 @@ public class Input {
         @Override
         public void handle(MouseEvent e) {
             System.out.println("Input:\tMouse Released Event Fired");
-//            gunshotAnimation.stop();
-//            isMouseBeingPressed = false;
-//            System.out.println("Stopped shooting.");
+            gunshotAnimation.stop();
+            isShooting = false;
+            System.out.println("Stopped shooting.");
         }
     };
     
@@ -174,8 +173,25 @@ public class Input {
             
             @Override
             public void handle(long now) {
-                if((now / 1000000) - previousTime >= Settings.BULLET_FIRING_DELAY) {
-                    System.out.println("Bullet has been fired. . .");
+                if (GameManager.gameActive()) {
+                    
+                    long time = now / 1000000;
+                    
+                    if (time - previousTime >= Settings.BULLET_FIRING_DELAY) {
+                        new Bullet(GameManager.mainPlayer.getCenterX(), 
+                                    GameManager.mainPlayer.getCenterY(), 
+                                    mousePressedEvent.getX(), 
+                                    mousePressedEvent.getY(),
+                                    GameMath.calculateAngle(GameManager.mainPlayer.getCenterX(),
+                                                            GameManager.mainPlayer.getCenterY(),
+                                                            mousePressedEvent.getX(),
+                                                            mousePressedEvent.getY()))
+                                    .start(playerField);                    
+                        previousTime = time;
+                    }
+                } else {
+                    this.stop();
+                    isShooting = false;
                 }
             }
         };
@@ -260,6 +276,11 @@ public class Input {
      */
     public double getAngle() {
         return playerAngle;
+    }
+    
+    public void resetSettings() {
+        gunshotAnimation.stop();
+        this.isShooting = false;
     }
 
 }
