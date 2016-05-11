@@ -281,6 +281,7 @@ public class Input {
     public void resetSettings() {
         gunshotAnimation.stop();
         this.isShooting = false;
+        keyboardBitSet.clear();
     }
 
 }

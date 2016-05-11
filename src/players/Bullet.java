@@ -115,6 +115,11 @@ public class Bullet {
 
                             this.onDestroy = true;
 
+                            if(y >= RuntimeSettings.getMaxBulletY()) {
+                                bulletView.relocate(x, RuntimeSettings.getMaxBulletY()-30);
+                            } else if(x >= RuntimeSettings.getMaxBulletX()) {
+                                bulletView.relocate(RuntimeSettings.getMaxBulletX()-30, y);
+                            }
                             bulletView.setImage(Settings.EXPLOSION);
                         }
                     }

@@ -26,8 +26,8 @@ public class RuntimeSettings {
         maxPlayerSpawnX = w - Settings.PLAYER_WIDTH;
         maxPlayerSpawnY = h - Settings.PLAYER_HEIGHT;
         
-        maxBulletPositionX = w - Settings.EXPLOSION_WIDTH;
-        maxBulletPositionY = h - Settings.EXPLOSION_HEIGHT;        
+        maxBulletPositionX = w;
+        maxBulletPositionY = h;      
     }   
     
     public static int getWidth() {return gameFieldWidth;}

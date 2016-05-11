@@ -12,7 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -42,6 +42,7 @@ public class SceneCreator {
         
         Text paused = new Text("Paused");
         paused.setFont(new Font(50));
+        paused.setFill(Color.WHITE);
         
         // Resume button for when user wants to resume gameplay.
         Button resumeButton = new Button("Resume");
@@ -74,6 +75,8 @@ public class SceneCreator {
         gridPane.add(mainMenuButton, 0, 2);
         GridPane.setHalignment(mainMenuButton, HPos.CENTER);
         GridPane.setMargin(mainMenuButton, new Insets(5,7,5,7));
+        
+        gridPane.setStyle("-fx-background-image: url(\"/background.png\");");
 
         return new Scene(gridPane,
                             RuntimeSettings.getWidth(),
@@ -89,6 +92,7 @@ public class SceneCreator {
 
         Text zombieInvasion = new Text("Zombie Invasion");
         zombieInvasion.setFont(new Font(50));
+        zombieInvasion.setFill(Color.WHITE);
         
         Button btn = new Button("Start!");
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -108,6 +112,8 @@ public class SceneCreator {
         gridPane.add(btn, 0, 1);
         GridPane.setHalignment(btn, HPos.CENTER);
         GridPane.setMargin(btn, new Insets(5,7,5,7));        
+        
+        gridPane.setStyle("-fx-background-image: url(\"/background.png\");");
         
         Scene scene = new Scene(gridPane, 800, 600);
 
@@ -131,11 +137,12 @@ public class SceneCreator {
         HBox statusBox = new HBox();
         statusBox.setPadding(new Insets(15, 12, 15, 12));
         statusBox.setSpacing(10);
-        statusBox.setStyle("-fx-background-color: #FFFFFF;");
+        statusBox.setStyle("-fx-background-color: #FFFFFF;");        
 
         Label stats = new Label("Health: ");
         stats.setPrefSize(400, 25);
-        statusBox.getChildren().add(stats);
+        stats.setTextFill(Color.WHITE);
+        statusBox.getChildren().add(stats);        
 
         Pane playerField = new Pane();
 
@@ -147,6 +154,8 @@ public class SceneCreator {
                                 RuntimeSettings.getWidth(),
                                 RuntimeSettings.getHeight(),
                                 Settings.BACKGROUND);
+        
+        borderPane.setStyle("-fx-background-image: url(\"/background.png\");");
 
         return new Object[]{scene, playerField, stats};
     }
@@ -163,6 +172,7 @@ public class SceneCreator {
     public static Scene createGameOverScene() {
         Text gameOver = new Text("Game Over");
         gameOver.setFont(new Font(50));
+        gameOver.setFill(Color.WHITE);
 
         Button restartButton = new Button("Restart");
         restartButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -195,6 +205,8 @@ public class SceneCreator {
         GridPane.setHalignment(mainMenuButton, HPos.CENTER);
         GridPane.setMargin(mainMenuButton, new Insets(5,7,5,7));
 
+        gridPane.setStyle("-fx-background-image: url(\"/background.png\");");
+        
         return new Scene(gridPane,
                             RuntimeSettings.getWidth(),
                             RuntimeSettings.getHeight());

@@ -7,6 +7,7 @@ package undesirable_invasion;
 
 import gamemanager.GameManager;
 import gamemanager.SceneCreator;
+import gamemanager.SoundManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -17,7 +18,13 @@ import javafx.stage.Stage;
 public class Undesirable_Invasion extends Application {
     
     @Override
-    public void start(Stage primaryStage) {           
+    public void start(Stage primaryStage) { 
+        if(System.getProperty("os.name").toLowerCase().contains("window")) {
+            new SoundManager().playSound();    
+            System.out.println("Started sound.");
+        } else {
+            System.out.println("Cannot play sound on "+System.getProperty("os.name"));
+        }
         GameManager.setPrimaryStage(primaryStage);
         primaryStage.setTitle("Undesirable Invasion");        
         primaryStage.setScene(SceneCreator.createStartScene());

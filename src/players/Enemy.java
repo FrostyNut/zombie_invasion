@@ -15,7 +15,7 @@ import javafx.scene.layout.Pane;
  */
 public class Enemy extends Player {
     
-    // This is the enemies health.
+    // The health of this enemy. 
     private int currentHealth = 5;
     
     // The previous time this enemy attacked.
@@ -23,6 +23,15 @@ public class Enemy extends Player {
     private int scaledDistance = 0;
     private int damage = 0;    
     
+   
+    /**
+     * Constructor for the Enemy class. Creates a new instance of the Enemy class. 
+     * 
+     * @see players.Player
+     * 
+     * @param speed     The speed of this enemy. 
+     * @param damage    The damage this enemy causes. 
+     */
     public Enemy(Pane pane, 
                     Image img, 
                     double x, 
@@ -41,8 +50,7 @@ public class Enemy extends Player {
 
     
     /**
-     * Deducts the main player's health. 
-     * 
+     * Moves this enemy and then attacks the main player if possible. 
      * @param now 
      */
     public void attackPlayer(long now) {
@@ -110,8 +118,9 @@ public class Enemy extends Player {
         return new double[]{rise,run};
     }
     
+    
     /**
-     * Updates this enemy's location.
+     * Updates this enemies location. 
      */
     private void updateLocation() {
         double[] temp = calculateNextPoint();
@@ -119,8 +128,10 @@ public class Enemy extends Player {
         y += temp[0];
     }    
     
+    
     /**
-     * Reduces the enemy's health.
+     * Deducts this enemy's health. If the health is at zero, it will remove this
+     * enemy from the living enemies list and add it to the dead enemies list. 
      */
     public void deductHealth() {
         this.currentHealth--;
@@ -128,6 +139,7 @@ public class Enemy extends Player {
             this.imageView.setImage(Settings.getDeadPlayerImage());
             GameManager.amountKilled++;
             GameManager.removePlayer(this);
+            GameManager.deadEnemies.add(this);
         }
     }            
 }
